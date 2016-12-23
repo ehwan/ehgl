@@ -55,6 +55,11 @@ public:
   {
     return position_;
   }
+  void position( Eigen::Vector3f const& p )
+  {
+    position_ = p;
+    reset_cache();
+  }
   void move( unsigned int i , float factor )
   {
     position_ += axis_[ i ] * factor;
@@ -182,7 +187,7 @@ public:
     max_ << max , far;
     reset_cache();
   }
-  /// in radians
+  /// in radians , aspect w/h
   void perspective( const float view_angle , const float aspect , const float near , const float far )
   {
     const float hh = std::tan( view_angle * 0.5f ) * near;

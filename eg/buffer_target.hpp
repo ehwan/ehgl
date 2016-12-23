@@ -112,7 +112,7 @@ namespace eg { namespace core
     template < typename T , size_t N >
     void data( GLenum usage , T const (&data)[N] ) const
     {
-      data( usage , sizeof(T)*N , data );
+      this->data( usage , sizeof(T)*N , data );
     }
     void subData( GLintptr offset , GLsizeiptr size , void const* data ) const
     {
