@@ -22,8 +22,6 @@
 #include "eg/loop.hpp"
 #include "eg/math.hpp"
 
-#include "eg/sdl.hpp"
-
 #undef EG_DEFINE_OBJECT_OPERATOR
 #undef EG_GL_VERSION
 
