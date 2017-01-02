@@ -145,29 +145,28 @@ namespace eg { namespace core
     std::unique_ptr< T const , unmap_deleter_t >
     map( read_only_t ) const
     {
-      return { glMapBuffer( target() , GL_READ_ONLY ) ,
+      return { reinterpret_cast<T const*>(glMapBuffer( target() , GL_READ_ONLY )) ,
                unmap_deleter_t( target() ) };
     }
     template < typename T = void >
     std::unique_ptr< T , unmap_deleter_t >
     map( write_only_t ) const
     {
-      return { glMapBuffer( target() , GL_READ_ONLY ) ,
+      return { reinterpret_cast<T*>(glMapBuffer( target() , GL_READ_ONLY )) ,
                unmap_deleter_t( target() ) };
     }
     template < typename T = void >
     std::unique_ptr< T , unmap_deleter_t >
     map( read_write_t ) const
     {
-      return { glMapBuffer( target() , GL_READ_ONLY ) ,
+      return { reinterpret_cast<T*>(glMapBuffer( target() , GL_READ_ONLY )) ,
                unmap_deleter_t( target() ) };
     }
     template < typename T = void >
     std::unique_ptr< T , unmap_deleter_t >
     map() const
     {
-      return { glMapBuffer( target() , GL_READ_ONLY ) ,
-               unmap_deleter_t( target() ) };
+      return map<T>( core::read_write_t() );
     }
   };
 }}
