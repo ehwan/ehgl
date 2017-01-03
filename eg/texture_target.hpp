@@ -78,6 +78,11 @@ namespace eg { namespace core
     {
       glTexParameterf( target() , pname , value );
     }
+
+    void read( GLenum format , GLenum type , void* pixels , GLint level=0 ) const
+    {
+      glGetTexImage( target() , level , format , type , pixels );
+    }
   };
 }}
 
