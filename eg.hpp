@@ -22,6 +22,9 @@
 #include "eg/loop.hpp"
 #include "eg/math.hpp"
 
+#include "eg/debug.hpp"
+#include "eg/debug_window.hpp"
+
 #undef EG_DEFINE_OBJECT_OPERATOR
 #undef EG_GL_VERSION
 
