@@ -1,6 +1,8 @@
 #pragma once
 
 #include <OpenGL/gl3.h>
+#include <exception>
+#include <iostream>
 
 #define EG_DEFINE_OBJECT_OPERATOR(class_name,handler_type,default_val,handler_name) \
   handler_type get() const \
@@ -24,6 +26,35 @@
   } \
   ~class_name() \
   { release_if(); }
+
+#define EG_THROW_EXCEPTION
+
+#define EG_CHECK_ERROR \
+  while( auto __eg_err_var__=glGetError() ) { \
+    throw_exception(__eg_err_var__); }
+
+namespace eg {
+
+void throw_exception( int err );
+
+class exception
+  : public std::exception
+{
+  int err_;
+public:
+  exception( int err )
+    : err_( err )
+  {
+  }
+
+  int error_code() const
+  {
+    return err_;
+  }
+  const char* what() const noexcept override;
+};
+
+}
 
 
 #define EG_GL_VERSION 330

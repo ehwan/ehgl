@@ -15,7 +15,8 @@ class Renderbuffer
   {
     if( handler_ )
     {
-      glDeleteTextures( 1 , &handler_ );
+      glDeleteRenderbuffers( 1 , &handler_ );
+      EG_CHECK_ERROR;
     }
   }
 
@@ -31,6 +32,7 @@ inline Renderbuffer make_renderbuffer()
 {
   GLuint ret;
   glGenRenderbuffers( 1 , &ret );
+  EG_CHECK_ERROR;
   return { ret };
 }
 

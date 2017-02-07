@@ -15,6 +15,7 @@ class VertexArray
     if( handler_ )
     {
       glDeleteVertexArrays( 1 , &handler_ );
+      EG_CHECK_ERROR;
     }
   }
 
@@ -24,10 +25,12 @@ public:
   void bind() const
   {
     glBindVertexArray( get() );
+    EG_CHECK_ERROR;
   }
   void unbind() const
   {
     glBindVertexArray( 0 );
+    EG_CHECK_ERROR;
   }
 };
 inline void swap( VertexArray& l , VertexArray& r )
@@ -39,6 +42,7 @@ inline VertexArray make_vertex_array()
 {
   GLuint ret;
   glGenVertexArrays( 1 , &ret );
+  EG_CHECK_ERROR;
   return { ret };
 }
 

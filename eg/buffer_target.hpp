@@ -43,6 +43,7 @@ namespace eg { namespace core
     void operator ()( void const* ) const
     {
       glUnmapBuffer( target_ );
+      EG_CHECK_ERROR;
     }
   };
 
@@ -60,15 +61,18 @@ namespace eg { namespace core
     {
       GLint ret;
       glGetBufferParameteriv( target() , param , &ret );
+      EG_CHECK_ERROR;
       return ret;
     }
     void bind( GLuint buffer , GLuint bindindex ) const
     {
       glBindBufferBase( target() , bindindex , buffer );
+      EG_CHECK_ERROR;
     }
     void bind( GLuint buffer , GLuint bindindex , GLintptr offset , GLsizeiptr size ) const
     {
       glBindBufferRange( target() , bindindex , buffer , offset , size );
+      EG_CHECK_ERROR;
     }
 
   public:
@@ -77,6 +81,7 @@ namespace eg { namespace core
     {
       GLint ret;
       glGetIntegerv( buffer_target_binding_t< target() >::value , &ret );
+      EG_CHECK_ERROR;
       return static_cast< GLuint >( ret );
     }
     operator GLenum() const
@@ -99,15 +104,18 @@ namespace eg { namespace core
     void bind( GLuint buffer ) const
     {
       glBindBuffer( target() , buffer );
+      EG_CHECK_ERROR;
     }
     void unbind() const
     {
       glBindBuffer( target() , 0 );
+      EG_CHECK_ERROR;
     }
 
     void data( GLenum usage , GLsizei size , void const* data ) const
     {
       glBufferData( target() , size , data , usage );
+      EG_CHECK_ERROR;
     }
     template < typename T , size_t N >
     void data( GLenum usage , T const (&data)[N] ) const
@@ -117,6 +125,7 @@ namespace eg { namespace core
     void subData( GLintptr offset , GLsizeiptr size , void const* data ) const
     {
       glBufferSubData( target() , offset , size , data );
+      EG_CHECK_ERROR;
     }
     template < typename T , size_t N >
     void subData( GLintptr offset , T const (&data)[N] ) const
@@ -131,10 +140,12 @@ namespace eg { namespace core
     void copySubData( GLenum readTarget , GLintptr readOffset , GLintptr writeOffset , GLsizeiptr size ) const
     {
       glCopyBufferSubData( readTarget , target() , readOffset , writeOffset , size );
+      EG_CHECK_ERROR;
     }
     void read( GLintptr offset , GLsizeiptr size , void* data ) const
     {
       glGetBufferSubData( target() , offset , size , data );
+      EG_CHECK_ERROR;
     }
     void read( GLsizeiptr size , void* data ) const
     {
@@ -145,22 +156,31 @@ namespace eg { namespace core
     std::unique_ptr< T const , unmap_deleter_t >
     map( read_only_t ) const
     {
-      return { reinterpret_cast<T const*>(glMapBuffer( target() , GL_READ_ONLY )) ,
-               unmap_deleter_t( target() ) };
+      auto ret = std::unique_ptr<T const,unmap_deleter_t>(
+          reinterpret_cast<T const*>(glMapBuffer(target(),GL_READ_ONLY)) ,
+          unmap_deleter_t( target() ) );
+      EG_CHECK_ERROR;
+      return ret;
     }
     template < typename T = void >
     std::unique_ptr< T , unmap_deleter_t >
     map( write_only_t ) const
     {
-      return { reinterpret_cast<T*>(glMapBuffer( target() , GL_READ_ONLY )) ,
-               unmap_deleter_t( target() ) };
+      auto ret = std::unique_ptr<T,unmap_deleter_t>(
+          reinterpret_cast<T*>(glMapBuffer(target(),GL_WRITE_ONLY)) ,
+          unmap_deleter_t( target() ) );
+      EG_CHECK_ERROR;
+      return ret;
     }
     template < typename T = void >
     std::unique_ptr< T , unmap_deleter_t >
     map( read_write_t ) const
     {
-      return { reinterpret_cast<T*>(glMapBuffer( target() , GL_READ_ONLY )) ,
-               unmap_deleter_t( target() ) };
+      auto ret = std::unique_ptr<T,unmap_deleter_t>(
+          reinterpret_cast<T*>(glMapBuffer(target(),GL_READ_WRITE)) ,
+          unmap_deleter_t( target() ) );
+      EG_CHECK_ERROR;
+      return ret;
     }
     template < typename T = void >
     std::unique_ptr< T , unmap_deleter_t >

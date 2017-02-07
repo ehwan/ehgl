@@ -17,6 +17,7 @@ class Sync
     if( handler_ )
     {
       glDeleteSync( handler_ );
+      EG_CHECK_ERROR;
     }
   }
 
@@ -34,16 +35,18 @@ public:
   template < typename T >
   bool wait_cpu( T nano_timeout ) const
   {
-    return 
-      glClientWaitSync( get() , GL_SYNC_FLUSH_COMMANDS_BIT , dur_to_nano( nano_timeout ) )
+      bool ret = glClientWaitSync( get() , GL_SYNC_FLUSH_COMMANDS_BIT , dur_to_nano( nano_timeout ) )
       != GL_TIMEOUT_EXPIRED;
+      EG_CHECK_ERROR;
+      return ret;
   }
   template < typename T >
   bool wait_gpu( T nano_timeout ) const
   {
-    return 
-      glWaitSync( get() , GL_SYNC_FLUSH_COMMANDS_BIT , dur_to_nano( nano_timeout ) )
+      bool ret = glWaitSync( get() , GL_SYNC_FLUSH_COMMANDS_BIT , dur_to_nano( nano_timeout ) )
       != GL_TIMEOUT_EXPIRED;
+      EG_CHECK_ERROR;
+      return ret;
   }
 };
 inline void swap( Sync& l , Sync& r )
@@ -53,7 +56,9 @@ inline void swap( Sync& l , Sync& r )
 
 inline Sync make_sync()
 {
-  return { glFenceSync( GL_SYNC_GPU_COMMANDS_COMPLETE , 0 ) };
+  auto ret = glFenceSync( GL_SYNC_GPU_COMMANDS_COMPLETE , 0 );
+  EG_CHECK_ERROR;
+  return { ret };
 }
 
 

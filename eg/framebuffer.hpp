@@ -16,6 +16,7 @@ class Framebuffer
     if( handler_ )
     {
       glDeleteFramebuffers( 1 , &handler_ );
+      EG_CHECK_ERROR;
     }
   }
 
@@ -31,6 +32,7 @@ inline Framebuffer make_framebuffer()
 {
   GLuint ret;
   glGenFramebuffers( 1 , &ret );
+  EG_CHECK_ERROR;
   return { ret };
 }
 

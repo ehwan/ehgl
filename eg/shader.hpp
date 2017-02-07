@@ -5,8 +5,6 @@
 #include <memory>
 #include <initializer_list>
 #include <algorithm>
-#include <fcntl.h>
-#include <unistd.h>
 
 namespace eg
 {
@@ -22,6 +20,7 @@ class Shader
     if( handler_ )
     {
       glDeleteShader( handler_ );
+      EG_CHECK_ERROR;
     }
   }
 
@@ -31,14 +30,17 @@ public:
   void source( GLsizei count , GLchar const* const* strings , GLint const* lengths = nullptr ) const
   {
     glShaderSource( get() , count , strings , lengths );
+    EG_CHECK_ERROR;
   }
   void source( GLchar const* string , GLint const length ) const
   {
     glShaderSource( get() , 1 , &string , &length );
+    EG_CHECK_ERROR;
   }
   void source( GLchar const* strings ) const
   {
     glShaderSource( get() , 1 , &strings , nullptr );
+    EG_CHECK_ERROR;
   }
   void source( std::initializer_list< GLchar const* > strings , std::initializer_list< GLint > lengths ) const
   {
@@ -52,20 +54,24 @@ public:
   bool compile() const
   {
     glCompileShader( get() );
+    EG_CHECK_ERROR;
     GLint ret;
     glGetShaderiv( get() , GL_COMPILE_STATUS , &ret );
+    EG_CHECK_ERROR;
     return ret != GL_FALSE;
   }
   std::string errorMessage() const
   {
     GLint length;
     glGetShaderiv( get() , GL_INFO_LOG_LENGTH , &length );
+    EG_CHECK_ERROR;
 
     if( length > 0 )
     {
       std::unique_ptr< char[] > buf( new char[ length ] );
       GLsizei read = 0;
       glGetShaderInfoLog( get() , length , &read , buf.get() );
+      EG_CHECK_ERROR;
       if( read > 0 )
       {
         return std::string( buf.get() , read );
@@ -81,52 +87,45 @@ inline void swap( Shader& l , Shader& r )
 
 inline Shader make_vertex_shader()
 {
-  return { glCreateShader( GL_VERTEX_SHADER ) };
+  auto ret = glCreateShader( GL_VERTEX_SHADER );
+  EG_CHECK_ERROR;
+  return { ret };
 }
 inline Shader make_fragment_shader()
 {
-  return { glCreateShader( GL_FRAGMENT_SHADER ) };
+  auto ret = glCreateShader( GL_FRAGMENT_SHADER );
+  EG_CHECK_ERROR;
+  return { ret };
 }
 inline Shader make_geometry_shader()
 {
-  return { glCreateShader( GL_GEOMETRY_SHADER ) };
+  auto ret = glCreateShader( GL_GEOMETRY_SHADER );
+  EG_CHECK_ERROR;
+  return { ret };
 }
 
 #if EG_GL_VERSION>=400 || defined(EG_ARB_TESSELLATION_SHADER)
 // tessellation shader
 inline Shader make_tess_control_shader()
 {
-  return { glCreateShader( GL_TESS_CONTROL_SHADER ) };
+  auto ret = glCreateShader( GL_TESS_CONTROL_SHADER );
+  EG_CHECK_ERROR;
+  return { ret };
 }
 inline Shader make_tess_eval_shader()
 {
-  return { glCreateShader( GL_TESS_EVALUATION_SHADER ) };
+  auto ret = glCreateShader( GL_TESS_EVALUATION_SHADER );
+  EG_CHECK_ERROR;
+  return { ret };
 }
 #endif
 #if EG_GL_VERSION>=430 || (defined(EG_ARB_COMPUTE_SHADER)&&EG_GL_VERSION>=420)
 inline Shader make_compute_shader()
 {
-  return { glCreateShader( GL_COMPUTE_SHADER ) };
+  auto ret = glCreateShader( GL_COMPUTE_SHADER );
+  EG_CHECK_ERROR;
+  return { ret };
 }
 #endif
-
-inline std::string read_file( const char* file )
-{
-  int fd = ::open( file , O_RDONLY );
-  if( fd != -1 )
-  {
-    auto len = ::lseek( fd , 0 , SEEK_END );
-    if( len > 0 && (::lseek( fd , 0 , SEEK_SET )!=-1) )
-    {
-      std::unique_ptr< char[] > buf( new char[ len ] );
-      auto read = ::read( fd , buf.get() , len );
-      if( read > 0 )
-      {
-        return std::string( buf.get() , read );
-      }
-    }
-  }
-  return std::string();
-}
 
 }

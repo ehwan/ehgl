@@ -20,20 +20,24 @@ namespace eg { namespace core
     void readBuffer( GLenum src ) const
     {
       glReadBuffer( src );
+      EG_CHECK_ERROR;
     }
     void drawBuffers( GLsizei count , GLenum const* bufs ) const
     {
       glDrawBuffers( count , bufs );
+      EG_CHECK_ERROR;
     }
     void drawBuffers( std::initializer_list< GLenum > bufs ) const
     {
       drawBuffers( bufs.size() , &(*bufs.begin()) );
+      EG_CHECK_ERROR;
     }
 
     /// one of left right back front none
     void drawBuffer( GLenum buf = GL_NONE ) const
     {
       glDrawBuffer( buf );
+      EG_CHECK_ERROR;
     }
   public:
     
@@ -41,6 +45,7 @@ namespace eg { namespace core
     {
       GLint ret;
       glGetIntegerv( framebuffer_binding_enum_t< target() >::value , &ret );
+      EG_CHECK_ERROR;
       return static_cast< GLuint >( ret );
     }
     operator GLenum() const
@@ -51,35 +56,44 @@ namespace eg { namespace core
     void bind( GLuint fb ) const
     {
       glBindFramebuffer( target() , fb );
+      EG_CHECK_ERROR;
     }
     void unbind() const
     {
       glBindFramebuffer( target() , 0 );
+      EG_CHECK_ERROR;
     }
 
     bool check_status() const
     {
-      return glCheckFramebufferStatus( target() ) == GL_FRAMEBUFFER_COMPLETE;
+      bool ret = glCheckFramebufferStatus( target() ) == GL_FRAMEBUFFER_COMPLETE;
+      EG_CHECK_ERROR;
+      return ret;
+
     }
 
     bool attachTexture1d( GLenum attachment , GLenum textarget , GLuint texture , GLint level=0 ) const
     {
       glFramebufferTexture1D( target() , attachment , textarget , texture , level );
+      EG_CHECK_ERROR;
       return check_status();
     }
     bool attachTexture2d( GLenum attachment , GLenum textarget , GLuint texture , GLint level=0 ) const
     {
       glFramebufferTexture2D( target() , attachment , textarget , texture , level );
+      EG_CHECK_ERROR;
       return check_status();
     }
     bool attachTexture3d( GLenum attachment , GLenum textarget , GLuint texture , GLint level=0 ) const
     {
       glFramebufferTexture3D( target() , attachment , textarget , texture , level );
+      EG_CHECK_ERROR;
       return check_status();
     }
     bool attachRenderbuffer( GLenum attachment , GLuint renderbuffer ) const
     {
       glFramebufferRenderbuffer( target() , attachment , GL_RENDERBUFFER , renderbuffer );
+      EG_CHECK_ERROR;
       return check_status();
     }
 

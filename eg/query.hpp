@@ -14,6 +14,7 @@ namespace eg { namespace core
     {
       GLint ret;
       glGetQueryObjectiv( handler , pname , &ret );
+      EG_CHECK_ERROR;
       return ret;
     }
   };
@@ -24,6 +25,7 @@ namespace eg { namespace core
     {
       GLuint ret;
       glGetQueryObjectuiv( handler , pname , &ret );
+      EG_CHECK_ERROR;
       return ret;
     }
   };
@@ -42,6 +44,7 @@ class Query
     if( handler_ )
     {
       glDeleteQueries( 1 , &handler_ );
+      EG_CHECK_ERROR;
     }
   }
 
@@ -54,15 +57,18 @@ public:
   void bind( GLenum target ) const
   {
     glBeginQuery( target , get() );
+    EG_CHECK_ERROR;
   }
   void unbind( GLenum target ) const
   {
     glEndQuery( target );
+    EG_CHECK_ERROR;
   }
   bool available() const
   {
     GLint ret;
     glGetQueryObjectiv( get() , GL_QUERY_RESULT_AVAILABLE , &ret );
+    EG_CHECK_ERROR;
     return ret == GL_TRUE;
   }
   template < typename T = GLint >
@@ -86,6 +92,7 @@ inline Query make_query()
 {
   GLuint ret;
   glGenQueries( 1 , &ret );
+  EG_CHECK_ERROR;
   return { ret };
 }
 

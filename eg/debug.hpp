@@ -168,6 +168,7 @@ public:
     a_color_.pointer( 4 , GL_UNSIGNED_BYTE , GL_TRUE );
     eg::array_buffer.unbind();
     glDrawArrays( mode_ , 0 , count_ );
+    EG_CHECK_ERROR;
     vertexarray_.unbind();
   }
 };

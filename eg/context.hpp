@@ -12,13 +12,16 @@ public:
   {
     GLint ret;
     glGetIntegerv( pname , &ret );
+    EG_CHECK_ERROR;
     return ret;
   }
   const char* string( GLenum pname ) const
   {
-    return reinterpret_cast< const char* >(
+    const char* ret = reinterpret_cast< const char* >(
       glGetString( pname )
     );
+    EG_CHECK_ERROR;
+    return ret;
   }
 
   int major_version() const
@@ -43,9 +46,11 @@ public:
   }
   const char* extension( GLuint index ) const
   {
-    return reinterpret_cast< const char* >( 
+    const char* ret = reinterpret_cast< const char* >( 
       glGetStringi( GL_EXTENSIONS , index )
     );
+    EG_CHECK_ERROR;
+    return ret;
   }
   std::vector< const char* > extensions() const
   {

@@ -31,6 +31,7 @@ inline Buffer make_buffer()
 {
   GLuint ret;
   glGenBuffers( 1 , &ret );
+  EG_CHECK_ERROR;
   return { ret };
 }
 

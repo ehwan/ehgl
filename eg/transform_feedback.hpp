@@ -16,6 +16,7 @@ class TransformFeedback
     if( handler_ )
     {
       glDeleteTransformFeedbacks( 1 , &handler_ );
+      EG_CHECK_ERROR;
     }
   }
 
@@ -25,35 +26,43 @@ public:
   void bind() const
   {
     glBindTransformFeedback( GL_TRANSFORM_FEEDBACK , get() );
+    EG_CHECK_ERROR;
   }
   void unbind() const
   {
     glBindTransformFeedback( GL_TRANSFORM_FEEDBACK , 0 );
+    EG_CHECK_ERROR;
   }
 
   void pause() const
   {
     glPauseTransformFeedback();
+    EG_CHECK_ERROR;
   }
   void resume() const
   {
     glResumeTransformFeedback();
+    EG_CHECK_ERROR;
   }
   void draw( GLenum mode ) const
   {
     glDrawTransformFeedback( mode , get() );
+    EG_CHECK_ERROR;
   }
   void draw_instanced( GLenum mode , size_t instance_count ) const
   {
     glDrawTransformFeedbackInstanced( mode , get() , instance_count );
+    EG_CHECK_ERROR;
   }
   void begin( GLenum mode ) const
   {
     glBeginTransformFeedback( mode );
+    EG_CHECK_ERROR;
   }
   void end() const
   {
     glEndTransformFeedback();
+    EG_CHECK_ERROR;
   }
 };
 
@@ -65,6 +74,7 @@ inline TransformFeedback make_transform_feedback()
 {
   GLuint ret;
   glGenTransformFeedbacks( 1 , &ret );
+  EG_CHECK_ERROR;
   return { ret };
 }
 }

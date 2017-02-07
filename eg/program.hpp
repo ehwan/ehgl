@@ -22,6 +22,7 @@ class Program
     if( handler_ )
     {
       glDeleteProgram( handler_ );
+      EG_CHECK_ERROR;
     }
   }
 public:
@@ -31,28 +32,34 @@ public:
   void bind() const
   {
     glUseProgram( get() );
+    EG_CHECK_ERROR;
   }
   void unbind() const
   {
     glUseProgram( 0 );
+    EG_CHECK_ERROR;
   }
   void attachShader( GLuint shader ) const
   {
     glAttachShader( get() , shader );
+    EG_CHECK_ERROR;
   }
   void detachShader( GLuint shader ) const
   {
     glDetachShader( get() , shader );
+    EG_CHECK_ERROR;
   }
   void detachShaders() const
   {
     int count;
     glGetProgramiv( get() , GL_ATTACHED_SHADERS , &count );
+    EG_CHECK_ERROR;
     if( count > 0 )
     {
       std::unique_ptr< GLuint[] > shaders( new GLuint[ count ] );
       GLsizei read;
       glGetAttachedShaders( get() , count , &read , shaders.get() );
+      EG_CHECK_ERROR;
       for( GLsizei i=0; i<read; ++i )
       {
         detachShader( shaders[ i ] );
@@ -63,20 +70,24 @@ public:
   void bindAttribLocation( GLuint index , const char* name ) const
   {
     glBindAttribLocation( get() , index , name );
+    EG_CHECK_ERROR;
   }
   void bindFragDataLocation( GLuint index , const char* name ) const
   {
     glBindFragDataLocation( get() , index , name );
+    EG_CHECK_ERROR;
   }
   void transformFeedbackVaryings( GLsizei count , GLchar const* const* names ,
       GLenum mode = GL_INTERLEAVED_ATTRIBS ) const
   {
     glTransformFeedbackVaryings( get() , count , names , mode );
+    EG_CHECK_ERROR;
   }
   void transformFeedbackVaryings( std::initializer_list< GLchar const* > names ,
       GLenum mode = GL_INTERLEAVED_ATTRIBS ) const
   {
     transformFeedbackVaryings( names.size() , &(*names.begin()) , mode );
+    EG_CHECK_ERROR;
   }
 
 
@@ -85,30 +96,36 @@ public:
   {
     glUniformBlockBinding( get() ,
         glGetUniformBlockIndex( get() , name ) , bindindex );
+    EG_CHECK_ERROR;
   }
 
   bool link() const
   {
     glLinkProgram( get() );
+    EG_CHECK_ERROR;
     GLint linked;
     glGetProgramiv( get() , GL_LINK_STATUS , &linked );
+    EG_CHECK_ERROR;
     return linked != GL_FALSE;
   }
   bool link_detach() const
   {
     const bool ret = link();
     detachShaders();
+    EG_CHECK_ERROR;
     return ret;
   }
   std::string errorMessage() const
   {
     GLint length;
     glGetProgramiv( get() , GL_INFO_LOG_LENGTH , &length );
+    EG_CHECK_ERROR;
     if( length > 0 )
     {
       GLsizei read;
       std::unique_ptr< char[] > buf( new char[ length ] );
       glGetProgramInfoLog( get() , length , &read , buf.get() );
+      EG_CHECK_ERROR;
       if( read > 0 )
       {
         return std::string( buf.get() , read );
@@ -127,7 +144,9 @@ inline void swap( Program& l , Program& r )
 
 inline Program make_program()
 {
-  return { glCreateProgram() };
+  auto ret = glCreateProgram();
+  EG_CHECK_ERROR;
+  return { ret };
 }
 
 }
