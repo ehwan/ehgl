@@ -28,7 +28,13 @@ public:
   }
   void create( unsigned int w , unsigned int h , const char* title , unsigned int options=sf::Style::Default )
   {
-    sf::ContextSettings context( 8 , 8 , 0 , 4 , 1 , sf::ContextSettings::Core );
+    sf::ContextSettings context;
+    context.depthBits = 24;
+    context.stencilBits = 8;
+    context.antialiasingLevel = 0;
+    context.majorVersion = 4;
+    context.minorVersion = 1;
+    context.attributeFlags = context.Core;
     window_.create( sf::VideoMode(w,h) , title , options , context );
     window_.setActive();
   }
