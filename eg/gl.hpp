@@ -31,7 +31,7 @@
 
 #define EG_CHECK_ERROR \
   while( auto __eg_err_var__=glGetError() ) { \
-    throw_exception(__eg_err_var__); }
+    eg::throw_exception(__eg_err_var__); }
 
 namespace eg {
 
