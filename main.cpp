@@ -14,8 +14,11 @@ void enterframe( eg::debug::window_context &w )
   glClear( GL_COLOR_BUFFER_BIT );
   debug.begin( GL_TRIANGLES );
   debug.vertex2f( 0.0f, 0.0f );
+  debug.set_color( 1.0, 0.0, 0.0 );
   debug.vertex2f( 1.0f, 0.0f );
+  debug.set_color( 0.0f, 1.0f, 0.0 );
   debug.vertex2f( 1.0f, 1.0f );
+  debug.set_color( 0.0f, 0.0f, 1.0f );
   debug.end();
   w.swap_buffer();
 }
