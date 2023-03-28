@@ -10,6 +10,7 @@ eg::Program program;
 eg::VertexArray varray;
 eg::debug::window_context window;
 
+// load source file
 std::vector<char> loadfile( char const* name )
 {
   std::ifstream stream(name);
@@ -49,6 +50,7 @@ int main()
   std::cout << "Renderer : " << eg::context.renderer() << std::endl;
   std::cout << "Shader : " << eg::context.shading_version() << std::endl;
 
+  // shader creation
   {
     eg::Shader vertex = eg::make_vertex_shader();
     auto buf = loadfile( "vert.glsl" );
