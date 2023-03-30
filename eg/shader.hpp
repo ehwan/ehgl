@@ -85,6 +85,12 @@ inline void swap( Shader& l , Shader& r )
   std::swap( l.handler_ , r.handler_ );
 }
 
+inline Shader make_shader( GLenum shader_type )
+{
+  auto ret = glCreateShader(shader_type);
+  EG_CHECK_ERROR;
+  return {ret};
+}
 inline Shader make_vertex_shader()
 {
   auto ret = glCreateShader( GL_VERTEX_SHADER );

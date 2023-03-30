@@ -25,6 +25,8 @@
 #include "eg/debug.hpp"
 #include "eg/debug_window.hpp"
 
+#include "eg/util.hpp"
+
 #undef EG_DEFINE_OBJECT_OPERATOR
 #undef EG_GL_VERSION
 

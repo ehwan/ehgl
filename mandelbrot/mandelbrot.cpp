@@ -10,19 +10,6 @@ eg::Program program;
 eg::VertexArray varray;
 eg::debug::window_context window;
 
-// load source file
-std::vector<char> loadfile( char const* name )
-{
-  std::ifstream stream(name);
-  stream.seekg( 0, stream.end );
-  size_t len = stream.tellg();
-  std::vector<char> buf(len+1);
-  buf.back() = (char)0;
-  stream.seekg( 0, stream.beg );
-  stream.read( buf.data(), len );
-  return buf;
-}
-
 void event( eg::debug::window_context &w )
 {
   if( w.event().type == sf::Event::Closed )
@@ -50,24 +37,10 @@ int main()
   std::cout << "Renderer : " << eg::context.renderer() << std::endl;
   std::cout << "Shader : " << eg::context.shading_version() << std::endl;
 
-  // shader creation
+  // program creation & linkage
   {
-    eg::Shader vertex = eg::make_vertex_shader();
-    auto buf = loadfile( "vert.glsl" );
-    vertex.source( buf.data() );
-    if( vertex.compile() == false )
-    {
-      std::cout << "VertexShader : \n" << vertex.errorMessage() << std::endl;
-      return 0;
-    }
-    eg::Shader fragment = eg::make_fragment_shader();
-    buf = loadfile( "frag.glsl" );
-    fragment.source( buf.data() );
-    if( fragment.compile() == false )
-    {
-      std::cout << "Fragment : \n" << fragment.errorMessage() << std::endl;
-      return 0;
-    }
+    auto vertex = eg::load_shader( "vert.glsl", GL_VERTEX_SHADER );
+    auto fragment = eg::load_shader( "frag.glsl", GL_FRAGMENT_SHADER );
     program = eg::make_program();
     program.attachShader( vertex );
     program.attachShader( fragment );
