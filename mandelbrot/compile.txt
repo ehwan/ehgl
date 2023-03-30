@@ -1,1 +1,1 @@
-e++ mandelbrot.cpp -lsfml-window -lsfml-graphics -lsfml-system -framework OpenGL ../eg/*.cpp  
+c++ -lsfml-window -lsfml-graphics -lsfml-system -framework OpenGL ../eg/*.cpp mandelbrot.cpp
