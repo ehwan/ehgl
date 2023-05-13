@@ -1,2 +1,2 @@
 # ehgl
-OpenGL gl c++ wrapper
+OpenGL c++ wrapper
