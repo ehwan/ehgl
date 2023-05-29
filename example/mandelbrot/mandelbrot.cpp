@@ -1,5 +1,7 @@
-// compile arguments :
+// compile arguments for OSX :
 // -lsfml-window -lsfml-graphics -lsfml-system -framework OpenGL
+//
+// MANDELBROT Fractals Fragment shader
 
 #define GL_SILENCE_DEPRECATION
 #include "../eg.hpp"
@@ -29,7 +31,7 @@ void enterframe( eg::debug::window_context &w )
 
 int main()
 {
-  window.create(800,800,"hello OpenGL" );
+  window.create(800,800,"hello Mandelbrot" );
   window.set_enterframe( enterframe );
   window.set_event( event );
   std::cout << "OpenGL Version " << eg::context.major_version() << "." << eg::context.minor_version() << std::endl;
