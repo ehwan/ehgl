@@ -12,6 +12,7 @@ eg::debug::window_context window;
 eg::EyeAngle eye;
 eg::Perspective projection;
 
+// checked-tile plane rendering program
 struct tile_program_t
 {
   eg::Program program;
@@ -80,6 +81,8 @@ struct tile_program_t
     glDrawArrays( GL_TRIANGLE_STRIP, 0, 4 );
   }
 };
+
+// marching-cubes fluid rendering program
 struct fluid_program_t
 {
   eg::Program program;
@@ -178,6 +181,8 @@ struct fluid_program_t
 tile_program_t tile_program;
 fluid_program_t fluid_program;
 
+
+// move camera with WASD & RF keys
 void move()
 {
   {
@@ -237,6 +242,8 @@ void move()
   }
 }
 
+
+// event callback function
 void event( eg::debug::window_context &w )
 {
   if( w.event().type == sf::Event::Closed )
@@ -244,6 +251,8 @@ void event( eg::debug::window_context &w )
     w.close();
   }
 }
+
+// enterframe function; called every 1/60 seconds
 void enterframe( eg::debug::window_context &w )
 {
   move();
@@ -275,12 +284,15 @@ int main( int argc, char **argv )
   fluid_program.init();
 
 
+  // set camera position & angle Matrix
   eye.set( {1,0,0}, {0,1,0}, {0,0,1} );
   eye.position( {0.2,1.0,2.0} );
   eye.angle( {-0.5,-0.4,0} );
   //projection.frustum( {-0.3,-0.3}, {1.3,1.3}, 1, 5 );
   projection.perspective( 3.141592f/2.0f, 1.0f, 0.1, 5.0f );
 
+
+  // read polygon data from marching-cubes data file
   if( argc < 2 )
   {
     throw std::runtime_error( "enter input file!" );

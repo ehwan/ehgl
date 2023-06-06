@@ -12,6 +12,8 @@ eg::Program program;
 eg::VertexArray varray;
 eg::debug::window_context window;
 
+
+// event callback function
 void event( eg::debug::window_context &w )
 {
   if( w.event().type == sf::Event::Closed )
@@ -19,6 +21,8 @@ void event( eg::debug::window_context &w )
     w.close();
   }
 }
+
+// enterframe function; called every 1/60 sec
 void enterframe( eg::debug::window_context &w )
 {
   glDisable( GL_CULL_FACE );
