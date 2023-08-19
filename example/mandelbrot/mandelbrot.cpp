@@ -4,7 +4,7 @@
 // MANDELBROT Fractals Fragment shader
 
 #define GL_SILENCE_DEPRECATION
-#include "../eg.hpp"
+#include "../../eg.hpp"
 #include <vector>
 #include <fstream>
 
@@ -45,8 +45,8 @@ int main()
 
   // program creation & linkage
   {
-    auto vertex = eg::load_shader( "vert.glsl", GL_VERTEX_SHADER );
-    auto fragment = eg::load_shader( "frag.glsl", GL_FRAGMENT_SHADER );
+    auto vertex = eg::load_shader( "../example/mandelbrot/vert.glsl", GL_VERTEX_SHADER );
+    auto fragment = eg::load_shader( "../example/mandelbrot/frag.glsl", GL_FRAGMENT_SHADER );
     program = eg::make_program();
     program.attachShader( vertex );
     program.attachShader( fragment );
