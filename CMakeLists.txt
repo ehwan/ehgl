@@ -35,12 +35,31 @@ set_target_properties( mandelbrot
   CXX_STANDARD 17
 )
 
+project( cubes )
+add_executable( cubes  
+  example/3d/cubes.cpp
+)
+target_link_libraries( cubes PUBLIC
+  ehgl
+  sfml-window
+  sfml-graphics
+  sfml-system
+)
+set_target_properties( cubes 
+  PROPERTIES
+  LANGUAGE CXX
+  CXX_STANDARD 17
+)
+
 if( APPLE )
   target_link_libraries( mandelbrot PUBLIC
     "-framework OpenGL"
   )
+  target_link_libraries( cubes PUBLIC
+    "-framework OpenGL"
+  )
 else()
-  target_link_libraries( mandelbrot PUBLIC
+  target_link_libraries( cubes PUBLIC
     GL
   )
 endif()
