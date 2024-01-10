@@ -14,6 +14,7 @@ eg::Perspective projection;
 
 const int CUBE_COUNT = 5;
 
+// Vertex shader source code
 const char* vertex_shader_source =
 "#version 330 core\n"
 "\n"
@@ -37,6 +38,7 @@ const char* vertex_shader_source =
   "color =  vec3(0.6,0.8,1.0);\n"
 "}\n";
 
+// Fragment shader source code
 const char *fragment_shader_source =
 "#version 330 core\n"
 "\n"
@@ -62,7 +64,7 @@ const char *fragment_shader_source =
 "}\n";
 
 
-
+// Function to move the camera based on keyboard and mouse input
 void move()
 {
   {
@@ -116,6 +118,7 @@ void move()
   }
 }
 
+// Function to handle window events
 void event( eg::debug::window_context &w )
 {
   if( w.event().type == sf::Event::Closed )
@@ -124,6 +127,7 @@ void event( eg::debug::window_context &w )
   }
 }
 
+// Function called every frame, responsible for camera movement and rendering
 void enterframe( eg::debug::window_context &w )
 {
   move();
@@ -157,6 +161,10 @@ int main( int argc, char **argv )
   std::cout << "Renderer : " << eg::context.renderer() << std::endl;
   std::cout << "Shader : " << eg::context.shading_version() << std::endl;
 
+
+  // 
+  // Initialize shaders and variables
+  // 
   {
     auto vertex = eg::make_shader( GL_VERTEX_SHADER );
     vertex.source( vertex_shader_source );
@@ -177,6 +185,9 @@ int main( int argc, char **argv )
     }
   }
 
+  // 
+  // Initialize Vertex Array and Buffers
+  // 
   varray = eg::make_vertex_array();
   program.bind();
   varray.bind();
@@ -308,6 +319,10 @@ int main( int argc, char **argv )
   pa.enableArray();
   pa.divisor( 1 );
   pa.pointer( 3, GL_FLOAT );
+
+  // 
+  // Set up camera and projection matrix
+  // 
 
   // set local basis
   eye.set( {1,0,0}, {0,1,0}, {0,0,1} );
