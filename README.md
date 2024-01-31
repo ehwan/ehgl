@@ -3,10 +3,12 @@ header-only OpenGL c++ wrapper
 
 RAII based GL Objects and memory allocation
 
-This project is using `Eigen` for Perspective & Camera matrix construction ( `eg/math.hpp` )
+- This project is using `Eigen` for Perspective & Camera matrix construction ( `eg/math.hpp` )
 and `SFML` for debug window creation ( `eg/debug_window.hpp` ).
 
-comment out those files in `eg.hpp` to remove dependancy.
+- comment out those files in `eg.hpp` to remove dependancy.
+
+- for your own OpenGL Loader, include main header file to `eg/gl.hpp`
 
 ## Sample Code
 

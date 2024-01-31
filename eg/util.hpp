@@ -1,33 +1,34 @@
 #pragma once
 
+#include "shader.hpp"
+#include <fstream>
+#include <iostream>
 #include <stdexcept>
 #include <vector>
-#include <fstream>
-#include "shader.hpp"
-#include <iostream>
 
-namespace eg {
+namespace eg
+{
 
-std::vector<char> load_file( char const* filename )
+inline std::vector<char> load_file(char const* filename)
 {
   std::ifstream stream(filename);
-  stream.seekg( 0, stream.end );
+  stream.seekg(0, stream.end);
   size_t len = stream.tellg();
-  std::vector<char> buf(len+1);
+  std::vector<char> buf(len + 1);
   buf.back() = (char)0;
-  stream.seekg( 0, stream.beg );
-  stream.read( buf.data(), len );
+  stream.seekg(0, stream.beg);
+  stream.read(buf.data(), len);
   return buf;
 }
 
-Shader load_shader( const char *filename, GLenum shader_type )
+inline Shader load_shader(const char* filename, GLenum shader_type)
 {
   Shader sh = eg::make_shader(shader_type);
-  auto buf = load_file( filename );
-  sh.source( buf.data() );
-  if( sh.compile() == false )
+  auto buf = load_file(filename);
+  sh.source(buf.data());
+  if (sh.compile() == false)
   {
-    throw std::runtime_error( sh.errorMessage() );
+    throw std::runtime_error(sh.errorMessage());
   }
   return sh;
 }
