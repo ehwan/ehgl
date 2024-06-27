@@ -12,15 +12,15 @@ class loop_t
   time::clock::time_point saved_time_;
 
 public:
-  template < typename T >
-  loop_t( T&& time_gap )
-    : time_gap_( time::to_duration( time_gap ) )
+  template <typename T>
+  loop_t(T&& time_gap)
+      : time_gap_(time::to_duration(time_gap))
   {
     reset();
   }
   loop_t()
   {
-    reset( time::uduration::zero() );
+    reset(time::uduration::zero());
   }
 
   void reset()
@@ -28,10 +28,10 @@ public:
     saved_time_ = time::clock::now();
     gap_saved_ = gap_saved_.zero();
   }
-  template < typename Dur >
-  void reset( Dur dur )
+  template <typename Dur>
+  void reset(Dur dur)
   {
-    time_gap_ = time::to_duration( dur );
+    time_gap_ = time::to_duration(dur);
     reset();
   }
   time::uduration const& gap() const
@@ -40,15 +40,15 @@ public:
   }
   float dt() const
   {
-    return std::chrono::duration_cast< 
-      std::chrono::duration< float , std::ratio< 1 > > 
-    >( gap_saved_ ).count();
+    return std::chrono::duration_cast<
+               std::chrono::duration<float, std::ratio<1>>>(gap_saved_)
+        .count();
   }
 
-  bool operator ()()
+  bool operator()()
   {
     const time::uduration gap = time::clock::now() - saved_time_;
-    if( gap >= time_gap_ )
+    if (gap >= time_gap_)
     {
       saved_time_ = time::clock::now();
       gap_saved_ = gap;

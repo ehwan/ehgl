@@ -1,32 +1,41 @@
 #pragma once
 
-#include <SFML/Window.hpp>
-#include <vector>
-#include <functional>
 #include "loop.hpp"
+#include <SFML/Window.hpp>
+#include <functional>
+#include <vector>
 
-namespace eg { namespace debug {
+namespace eg
+{
+namespace debug
+{
 
 class window_context
 {
 protected:
   sf::Window window_;
-  eg::loop_t loop_{ 1.0f/60.0f };
-  bool run_{ false };
+  eg::loop_t loop_ { 1.0f / 60.0f };
+  bool run_ { false };
   sf::Event eventdata_;
 
-  std::function< void(window_context&) > enterframe_;
-  std::function< void(window_context&) > event_;
+  std::function<void(window_context&)> enterframe_;
+  std::function<void(window_context&)> event_;
 
 public:
   window_context()
   {
   }
-  window_context( unsigned int w , unsigned int h , const char* title , unsigned int options=sf::Style::Default )
+  window_context(unsigned int w,
+                 unsigned int h,
+                 const char* title,
+                 unsigned int options = sf::Style::Default)
   {
-    create( w , h , title , options );
+    create(w, h, title, options);
   }
-  void create( unsigned int w , unsigned int h , const char* title , unsigned int options=sf::Style::Default )
+  void create(unsigned int w,
+              unsigned int h,
+              const char* title,
+              unsigned int options = sf::Style::Default)
   {
     sf::ContextSettings context;
     context.depthBits = 24;
@@ -35,7 +44,7 @@ public:
     context.majorVersion = 4;
     context.minorVersion = 1;
     context.attributeFlags = context.Core;
-    window_.create( sf::VideoMode(w,h) , title , options , context );
+    window_.create(sf::VideoMode(w, h), title, options, context);
     window_.setActive();
   }
   void close()
@@ -54,11 +63,11 @@ public:
   {
     return loop_;
   }
-  void set_enterframe( std::function< void(window_context&) > func )
+  void set_enterframe(std::function<void(window_context&)> func)
   {
     enterframe_ = std::move(func);
   }
-  void set_event( std::function< void(window_context&) > func )
+  void set_event(std::function<void(window_context&)> func)
   {
     event_ = std::move(func);
   }
@@ -74,24 +83,25 @@ public:
   void run()
   {
     run_ = true;
-    while( run_ )
+    while (run_)
     {
-      while( window_.pollEvent(eventdata_) )
+      while (window_.pollEvent(eventdata_))
       {
-        if( event_ )
+        if (event_)
         {
-          event_( *this );
+          event_(*this);
         }
       }
-      if( loop_() )
+      if (loop_())
       {
-        if( enterframe_ )
+        if (enterframe_)
         {
-          enterframe_( *this );
+          enterframe_(*this);
         }
       }
     }
   }
 };
 
-}}
+}
+}
