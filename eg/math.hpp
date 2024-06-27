@@ -1,7 +1,7 @@
 #pragma once
 
+#include <Eigen/Dense>
 #include <cmath>
-#include <eigen3/Eigen/Dense>
 #include <memory>
 
 namespace eg

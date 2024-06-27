@@ -22,12 +22,14 @@ add_executable( mandelbrot
 )
 find_package( SFML COMPONENTS window graphics system REQUIRED )
 find_package( OpenGL REQUIRED )
+find_package( Eigen3 REQUIRED )
 target_link_libraries( mandelbrot PUBLIC
   ehgl
   OpenGL::GL
   sfml-window
   sfml-graphics
   sfml-system
+  Eigen3::Eigen
 )
 set_target_properties( mandelbrot
   PROPERTIES
@@ -41,12 +43,14 @@ add_executable( cubes
 )
 find_package( SFML COMPONENTS window graphics system REQUIRED )
 find_package( OpenGL REQUIRED )
+find_package( Eigen3 REQUIRED )
 target_link_libraries( cubes PUBLIC
   ehgl
   OpenGL::GL
   sfml-window
   sfml-graphics
   sfml-system
+  Eigen3::Eigen
 )
 set_target_properties( cubes 
   PROPERTIES
